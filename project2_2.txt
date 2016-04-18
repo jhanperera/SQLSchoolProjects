@@ -1,0 +1,217 @@
+LIST COMMAND OPTIOnS
+
+     Command Line Processor Option Settings
+
+ Backend process wait time (seconds)        (DB2BQTIME) = 1
+ No. of retries to connect to backend        (DB2BQTRY) = 60
+ Request queue wait time (seconds)          (DB2RQTIME) = 5
+ Input queue wait time (seconds)            (DB2IQTIME) = 5
+ Command options                           (DB2OPTIONS) = 
+
+ Option  Description                               Current Setting
+ ------  ----------------------------------------  ---------------
+   -a    Display SQLCA                             OFF
+   -b    Auto-Bind                                 ON
+   -c    Auto-Commit                               ON
+   -d    Retrieve and display XML declarations     OFF
+   -e    Display SQLCODE/SQLSTATE                  OFF
+   -f    Read from input file                      OFF
+   -i    Display XML data with indentation         OFF
+   -j    Return code for system calls              OFF
+   -l    Log commands in history file              OFF
+   -m    Display the number of rows affected       OFF
+   -n    Remove new line character                 OFF
+   -o    Display output                            ON
+   -p    Display interactive input prompt          ON
+   -q    Preserve whitespaces & linefeeds          OFF
+   -r    Save output to report file                OFF
+   -s    Stop execution on command error           OFF
+   -t    Set statement termination character       OFF
+   -v    Echo current command                      ON
+   -w    Display FETCH/SELECT warning messages     ON
+   -x    Suppress printing of column headings      OFF
+   -z    Save all output to output file            ON project2_2.txt
+
+
+LIST TABLES
+
+Table/View                      Schema          Type  Creation time             
+------------------------------- --------------- ----- --------------------------
+ARTIST                          CSE13187        T     2016-02-15-17.26.35.854319
+ARTOBJ                          CSE13187        T     2016-02-15-17.26.40.870914
+ARTOBJ_BORROWED_COLLECTION      CSE13187        T     2016-02-15-17.28.08.931083
+ARTOBJ_EXPOSED_IN_EXHIBITION    CSE13187        T     2016-02-15-17.28.14.904244
+ARTOBJ_MADEBY_ARTIST            CSE13187        T     2016-02-15-17.28.03.546389
+BORROWED                        CSE13187        T     2016-02-15-17.27.07.152201
+CLUB_2016                       CSE13187        T     2016-01-13-12.18.57.263337
+EXHIBITION                      CSE13187        T     2016-02-15-17.26.45.929201
+OTHER                           CSE13187        T     2016-02-15-17.27.57.798499
+OTHER_COLLECTIONS               CSE13187        T     2016-02-15-17.26.54.477935
+PAINTING                        CSE13187        T     2016-02-15-17.27.41.389056
+PERMANENT                       CSE13187        T     2016-02-15-17.27.00.274420
+SCULPTURE                       CSE13187        T     2016-02-15-17.27.46.802988
+
+  13 record(s) selected.
+
+
+SELECT * FROM ARTIST
+
+A_ID    ANAME                     ABIRTH     ADEATH     ACOUNTRY        AEPOCH               ASTYLE          ABIOGRPH       
+------- ------------------------- ---------- ---------- --------------- -------------------- --------------- ---------------
+JP_A1   A1                        01/01/1657 01/05/1702 Holland         -                    -               -              
+JP_A2   A2                        05/09/1980 -          Canada          -                    -               -              
+JP_A3   A3                        01/02/1978 -          Canada          -                    -               -              
+unknown unknown                   01/01/1000 -          -               -                    -               -              
+
+  4 record(s) selected.
+
+
+SELECT * FROM ARTOBJ
+
+ARTID ARTYEAR ARTTITEL             ARTEPOCH        ARTDESCR          OSTYLE          ARTARTIST
+----- ------- -------------------- --------------- ----------------- --------------- ---------
+JP01     1700 01                   Modern          Paint-On-Canvas   style1          A1       
+JP02     1710 02                   Modern          Paint-On-Wood     style1          A1       
+JP03     2000 03                   Modern          Stone             style2          A2       
+JP04     2000 04                   Modern          Wood              style2          A2       
+JP05     2007 05                   Modern          Photo             style3          A2       
+JP06     2008 06                   Modern          Video             style3          A2       
+JP07     1600 07                   Modern          Paint-On-Wood     style2          unknown  
+JP08     2000 08                   Modern          Steel             style4          A3       
+JP09     2002 09                   Modern          Photo             style4          A3       
+
+  9 record(s) selected.
+
+
+SELECT * FROM ARTOBJ_BORROWED_COLLECTION
+
+BORR_ID ARTOBJ COL_ID  DATEBORROWED DATERETURNED
+------- ------ ------- ------------ ------------
+1       JP01   JP_C1   12/23/2004   12/02/2005  
+2       JP01   JP_C1   12/23/2005   11/02/2006  
+3       JP01   JP_C1   02/05/2009   03/04/2009  
+4       JP07   JP_C2   02/02/2005   02/03/2006  
+5       JP07   JP_C2   12/02/2007   12/12/2008  
+6       JP08   JP_C3   12/30/2006   12/30/2008  
+7       JP09   JP_C3   12/30/2006   12/30/2008  
+
+  7 record(s) selected.
+
+
+SELECT * FROM ARTOBJ_EXPOSED_IN_EXHIBITION
+
+ARTID E_ID    STARTDATE  ENDDATE   
+----- ------- ---------- ----------
+JP01  JP_E01  02/05/2009 03/04/2009
+JP02  JP_E02  11/24/2007 12/24/2007
+JP03  JP_E02  02/02/2008 04/25/2008
+JP04  JP_E02  02/02/2008 04/25/2008
+JP05  JP_E02  02/02/2008 04/25/2008
+JP06  JP_E03  03/30/2009 04/30/2009
+JP07  JP_E02  12/02/2007 02/02/2008
+
+  7 record(s) selected.
+
+
+SELECT * FROM ARTOBJ_MADEBY_ARTIST
+
+ARTOBJ_ID ARTIST_ID
+--------- ---------
+JP01      JP_A1    
+JP02      JP_A1    
+JP03      JP_A2    
+JP04      JP_A2    
+JP05      JP_A2    
+JP07      unknown  
+JP08      JP_A3    
+JP09      JP_A3    
+
+  8 record(s) selected.
+
+
+SELECT * FROM BORROWED
+
+ARTID DATEBORROW DATERETURN
+----- ---------- ----------
+JP01  02/05/2009 03/04/2009
+JP07  12/02/2007 12/12/2008
+JP08  12/30/2006 12/30/2008
+JP09  12/30/2006 12/30/2008 
+
+  2 record(s) selected.
+
+
+SELECT * FROM EXHIBITION
+
+E_ID    EXIBNAME        EXIBPLACE                      EXIBSTART  EXIBEND   
+------- --------------- ------------------------------ ---------- ----------
+JP_E01  E1              Hamilton                       01/29/2009 05/04/2009
+JP_E02  E2              Toronto                        11/24/2007 05/05/2008
+JP_E03  E3              Toronto                        01/01/2009 05/30/2009
+
+  3 record(s) selected.
+
+
+SELECT * FROM OTHER
+
+ARTID OTYPE     
+----- ----------
+JP05  Photo     
+JP06  Video     
+JP09  Photo     
+
+  3 record(s) selected.
+
+
+SELECT * FROM OTHER_COLLECTIONS
+
+COL_ID  COLNAME         COLTYPE              COLDESCR  COLADR               COLPHONE   COLCONTACT          
+------- --------------- -------------------- --------- -------------------- ---------- --------------------
+JP_C1   C1              Private              Small     C1 Road              4567891    Anissa Maw          
+JP_C2   C2              Museum               Large     C2 Ave               5551234    Hector Berlioz      
+JP_C3   C3              Museum               Small     C3 Road              1231234    Jhan Perera         
+
+  3 record(s) selected.
+
+
+SELECT * FROM PAINTING
+
+ARTID PTYPE           PMAT           
+----- --------------- ---------------
+JP01  Oil             Canvas         
+JP02  Oil             Wood           
+JP07  Oil             Wood           
+
+  3 record(s) selected.
+
+
+SELECT * FROM PERMANENT
+
+ARTID ARTDATE    ARTSTATE ARTCOST                 
+----- ---------- -------- ------------------------
+JP02  12/30/1980 display             +5.50000E+006
+JP03  12/12/1978 display             +3.20000E+004
+JP04  12/23/2000 display             +2.00000E+005
+JP05  12/23/2007 stored              +2.00000E+005
+JP06  12/12/2007 stored              +2.00000E+007
+
+  5 record(s) selected.
+
+
+SELECT * FROM SCULPTURE
+
+ARTID SMAT            SHEIGHT                  SWEIGHT                 
+----- --------------- ------------------------ ------------------------
+JP03  Stone                      +2.30000E+000            +2.34500E+002
+JP04  Wood                       +1.20000E+001            +5.55000E+001
+JP08  Steel                      +5.00000E-001            +2.50000E+000
+
+  3 record(s) selected.
+
+
+COMMIT WORK
+DB20000I  The SQL command completed successfully.
+
+TERMINATE
+DB20000I  The TERMINATE command completed successfully.
+

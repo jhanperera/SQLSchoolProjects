@@ -1,0 +1,275 @@
+list command options
+
+     Command Line Processor Option Settings
+
+ Backend process wait time (seconds)        (DB2BQTIME) = 1
+ No. of retries to connect to backend        (DB2BQTRY) = 60
+ Request queue wait time (seconds)          (DB2RQTIME) = 5
+ Input queue wait time (seconds)            (DB2IQTIME) = 5
+ Command options                           (DB2OPTIONS) = 
+
+ Option  Description                               Current Setting
+ ------  ----------------------------------------  ---------------
+   -a    Display SQLCA                             OFF
+   -b    Auto-Bind                                 ON
+   -c    Auto-Commit                               ON
+   -d    Retrieve and display XML declarations     OFF
+   -e    Display SQLCODE/SQLSTATE                  OFF
+   -f    Read from input file                      OFF
+   -i    Display XML data with indentation         OFF
+   -j    Return code for system calls              OFF
+   -l    Log commands in history file              OFF
+   -m    Display the number of rows affected       OFF
+   -n    Remove new line character                 OFF
+   -o    Display output                            ON
+   -p    Display interactive input prompt          ON
+   -q    Preserve whitespaces & linefeeds          OFF
+   -r    Save output to report file                OFF
+   -s    Stop execution on command error           OFF
+   -t    Set statement termination character       OFF
+   -v    Echo current command                      ON
+   -w    Display FETCH/SELECT warning messages     ON
+   -x    Suppress printing of column headings      OFF
+   -z    Save all output to output file            ON project2_1.txt
+
+
+CREATE TABLE Artist (A_Id Varchar(7) NOT NULL, AName Varchar(25) NOT NULL, ABirth Date DEFAULT NULL, ADeath Date DEFAULT NULL, ACountry Varchar(15) DEFAULT NULL, AEpoch Varchar(20) DEFAULT NULL, AStyle Varchar(15) DEFAULT NULL, ABiogrph Varchar(15) DEFAULT NULL, CONSTRAINT date_check CHECK (ABirth < ADeath), PRIMARY KEY (A_Id))
+DB20000I  The SQL command completed successfully.
+
+CREATE TABLE ArtObj (ArtID varchar(5) NOT NULL, ArtYear smallint NOT NULL, ArtTitel varchar(20) NOT NULL, ArtEpoch varchar(15) NOT NULL, ArtDescr varchar(50) NOT NULL, OStyle varchar(15) NOT NULL,  ArtArtist Varchar(7) NOT NULL, PRIMARY KEY (ArtID))
+DB20000I  The SQL command completed successfully.
+
+CREATE TABLE Exhibition (E_Id Varchar(7) NOT NULL, ExibName Varchar(15) NOT NULL UNIQUE, ExibPlace Varchar(30) NOT NULL, ExibStart Date DEFAULT NULL, ExibEnd Date, PRIMARY KEY (E_ID))
+DB20000I  The SQL command completed successfully.
+
+CREATE TABLE Other_collections(Col_Id Varchar(7) NOT NULL, ColName Varchar(15) NOT NULL, ColType Varchar(20) NOT NULL, ColDescr Varchar(50) DEFAULT NULL, ColAdr Varchar(20) NOT NULL, ColPhone Varchar(10) NOT NULL, ColContact Varchar(20) NOT NULL, PRIMARY KEY (Col_Id))
+DB20000I  The SQL command completed successfully.
+
+CREATE TABLE Permanent (ArtID varchar(5) NOT NULL, ArtDate Date NOT NULL, ArtState varchar(7) NOT NULL, CHECK (ArtState in ('display', 'stored')), ArtCost Real NOT NULL, CONSTRAINT fk_perm FOREIGN KEY(ArtID) References ArtObj ON DELETE CASCADE)
+DB20000I  The SQL command completed successfully.
+
+CREATE TABLE Borrowed (ArtID varchar(5) NOT NULL, DateBorrow Date NOT NULL, DateReturn Date NOT NULL, CONSTRAINT fk_borrow FOREIGN KEY(ArtID) References ArtObj ON DELETE CASCADE)
+DB20000I  The SQL command completed successfully.
+
+CREATE TABLE Painting (ArtID varchar(5) NOT NULL, Ptype varchar(15) NOT NULL, PMat varchar(15) NOT NULL, CONSTRAINT fk_paint FOREIGN KEY(ArtID) References ArtObj ON DELETE CASCADE)
+DB20000I  The SQL command completed successfully.
+
+CREATE TABLE Sculpture (ArtID varchar(5) NOT NULL, SMat varchar(15) NOT NULL, SHeight Real NOT NULL, SWeight Real NOT NULL, CONSTRAINT fk_sculpture FOREIGN KEY(ArtID) References ArtObj ON DELETE CASCADE)
+DB20000I  The SQL command completed successfully.
+
+CREATE TABLE Other (ArtID varchar(5) NOT NULL, OType varchar(10) NOT NULL, CONSTRAINT fk_other FOREIGN KEY(ArtID) References ArtObj ON DELETE CASCADE)
+DB20000I  The SQL command completed successfully.
+
+CREATE TABLE ArtObj_MadeBy_Artist(ArtObj_ID Varchar(7) NOT NULL, Artist_ID Varchar(7) NOT NULL, PRIMARY KEY (ArtObj_ID), FOREIGN KEY (ArtObj_ID) REFERENCES ArtObj(ArtID) ON DELETE CASCADE, FOREIGN KEY (Artist_ID) REFERENCES Artist(A_Id) ON DELETE CASCADE)
+DB20000I  The SQL command completed successfully.
+
+CREATE TABLE ArtObj_Borrowed_Collection(Borr_ID Varchar(5) NOT NULL, ArtObj Varchar(5) NOT NULL, Col_Id Varchar(7) NOT NULL, Dateborrowed Date DEFAULT NULL, Datereturned Date DEFAULT NULL, PRIMARY KEY (Borr_ID), FOREIGN KEY (ArtObj) REFERENCES ArtObj ON DELETE CASCADE, FOREIGN KEY (Col_Id) REFERENCES Other_collections ON DELETE NO ACTION)
+DB20000I  The SQL command completed successfully.
+
+CREATE TABLE ArtObj_Exposed_In_Exhibition(ArtID varchar(5) NOT NULL, E_Id Varchar(7) NOT NULL, Startdate Date DEFAULT NULL, Enddate Date DEFAULT NULL, PRIMARY KEY (ArtID, E_Id), FOREIGN KEY (ArtID) REFERENCES ArtObj(ArtID) ON DELETE CASCADE , FOREIGN KEY (E_Id) REFERENCES Exhibition ON DELETE NO ACTION)
+DB20000I  The SQL command completed successfully.
+
+COMMIT WORK
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO Artist(A_Id, AName, ABirth, ADeath, ACountry ) values ('JP_A1', 'A1', '01/01/1657', '01/05/1702', 'Holland')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO Artist(A_Id, AName, ABirth, ACountry ) values ('JP_A2', 'A2', '05/09/1980', 'Canada')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO Artist(A_Id, AName, ABirth, ACountry ) values ('JP_A3', 'A3', '01/02/1978', 'Canada')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO Artist(A_Id, AName, ABirth ) values ('unknown', 'unknown', '01/01/1000')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO Other_Collections(Col_Id, ColName, ColType, ColDescr, ColAdr, ColPhone, ColContact) values ('JP_C1', 'C1', 'Private', 'Small', 'C1 Road', '4567891', 'Anissa Maw')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO Other_Collections(Col_Id, ColName, ColType, ColDescr, ColAdr, ColPhone, ColContact) values ('JP_C2', 'C2', 'Museum', 'Large', 'C2 Ave', '5551234', 'Hector Berlioz')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO Exhibition(E_Id, ExibName, ExibPlace, ExibStart, ExibEnd) values ('JP_E01', 'E1', 'Hamilton', '01/29/2009', '05/04/2009')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO Exhibition(E_Id, ExibName, ExibPlace, ExibStart, ExibEnd) values ('JP_E02', 'E2', 'Toronto', '11/24/2007', '05/05/2008')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO Exhibition(E_Id, ExibName, ExibPlace, ExibStart, ExibEnd) values ('JP_E03', 'E3', 'Toronto', '01/01/2009', '05/30/2009')
+DB20000I  The SQL command completed successfully.
+
+COMMIT WORK
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj(ArtID, ArtYear, ArtTitel, ArtEpoch, ArtDescr, OStyle, ArtArtist) values ('JP01', 1700, '01', 'Modern', 'Paint-On-Canvas', 'style1', 'A1')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO Painting (ArtID, Ptype, PMat) values ('JP01', 'Oil', 'Canvas')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj_MadeBy_Artist(ArtObj_ID, Artist_ID) values ('JP01', 'JP_A1')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO Borrowed (ArtID, DateBorrow, DateReturn) values ('JP01', '2/5/2009', '3/4/2009')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj_Borrowed_Collection(Borr_ID, ArtObj, Col_Id, Dateborrowed, Datereturned) values ('1', 'JP01', 'JP_C1', '12/23/2004', '12/02/2005')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj_Borrowed_Collection(Borr_ID, ArtObj, Col_Id, Dateborrowed, Datereturned) values ('2', 'JP01', 'JP_C1', '12/23/2005', '11/02/2006')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj_Borrowed_Collection(Borr_ID, ArtObj, Col_Id, Dateborrowed, Datereturned) values ('3', 'JP01', 'JP_C1', '2/5/2009', '3/4/2009')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj_Exposed_In_Exhibition(ArtID, E_Id, Startdate, Enddate) values ('JP01', 'JP_E01', '02/05/2009', '03/04/2009')
+DB20000I  The SQL command completed successfully.
+
+COMMIT WORK
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj(ArtID, ArtYear, ArtTitel, ArtEpoch, ArtDescr, OStyle, ArtArtist) values ('JP02', 1710, '02', 'Modern', 'Paint-On-Wood', 'style1', 'A1')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO Painting (ArtID, Ptype, PMat) values ('JP02', 'Oil', 'Wood')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj_MadeBy_Artist(ArtObj_ID, Artist_ID) values ('JP02', 'JP_A1')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj_Exposed_In_Exhibition(ArtID, E_Id, Startdate, Enddate) values ('JP02', 'JP_E02', '11/24/2007', '12/24/2007')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO Permanent (ArtID, ArtDate, ArtState, ArtCost) values ('JP02', '12/30/1980', 'display', 5500000)
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj(ArtID, ArtYear, ArtTitel, ArtEpoch, ArtDescr, OStyle, ArtArtist) values ('JP03', 2000, '03', 'Modern', 'Stone', 'style2', 'A2')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO Sculpture (ArtID, SMat, SHeight, SWeight) values ('JP03', 'Stone', 2.3, 234.5)
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj_MadeBy_Artist(ArtObj_ID, Artist_ID) values ('JP03', 'JP_A2')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj_Exposed_In_Exhibition(ArtID, E_Id, Startdate, Enddate) values ('JP03', 'JP_E02', '02/02/2008', '04/25/2008')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO Permanent (ArtID, ArtDate, ArtState, ArtCost) values ('JP03', '12/12/1978', 'display', 32000)
+DB20000I  The SQL command completed successfully.
+
+COMMIT WORK
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj(ArtID, ArtYear, ArtTitel, ArtEpoch, ArtDescr, OStyle, ArtArtist) values ('JP04', 2000, '04', 'Modern', 'Wood', 'style2', 'A2')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO Sculpture (ArtID, SMat, SHeight, SWeight) values ('JP04', 'Wood', 12, 55.5)
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj_MadeBy_Artist(ArtObj_ID, Artist_ID) values ('JP04', 'JP_A2')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj_Exposed_In_Exhibition(ArtID, E_Id, Startdate, Enddate) values ('JP04', 'JP_E02', '02/02/2008', '04/25/2008')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO Permanent (ArtID, ArtDate, ArtState, ArtCost) values ('JP04', '12/23/2000', 'display', 200000)
+DB20000I  The SQL command completed successfully.
+
+COMMIT WORK
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj(ArtID, ArtYear, ArtTitel, ArtEpoch, ArtDescr, OStyle, ArtArtist) values ('JP05', 2007, '05', 'Modern', 'Photo', 'style3', 'A2')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO Other (ArtID, OType) values ('JP05', 'Photo')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj_MadeBy_Artist(ArtObj_ID, Artist_ID) values ('JP05', 'JP_A2')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj_Exposed_In_Exhibition(ArtID, E_Id, Startdate, Enddate) values ('JP05', 'JP_E02', '02/02/2008', '04/25/2008')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO Permanent (ArtID, ArtDate, ArtState, ArtCost) values ('JP05', '12/23/2007', 'stored', 200000)
+DB20000I  The SQL command completed successfully.
+
+COMMIT WORK
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj(ArtID, ArtYear, ArtTitel, ArtEpoch, ArtDescr, OStyle, ArtArtist) values ('JP06', 2008, '06', 'Modern', 'Video', 'style3', 'A2')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO Other (ArtID, OType) values ('JP06', 'Video')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj_Exposed_In_Exhibition(ArtID, E_Id, Startdate, Enddate) values ('JP06', 'JP_E03', '03/30/2009', '04/30/2009')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO Permanent (ArtID, ArtDate, ArtState, ArtCost) values ('JP06', '12/12/2007', 'stored', 20000000)
+DB20000I  The SQL command completed successfully.
+
+COMMIT WORK
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj(ArtID, ArtYear, ArtTitel, ArtEpoch, ArtDescr, OStyle, ArtArtist) values ('JP07', 1600, '07', 'Modern', 'Paint-On-Wood', 'style2', 'unknown')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO Painting (ArtID, Ptype, PMat) values ('JP07', 'Oil', 'Wood')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj_MadeBy_Artist(ArtObj_ID, Artist_ID) values ('JP07', 'unknown')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO Borrowed (ArtID, DateBorrow, DateReturn) values ('JP07', '12/2/2007', '12/12/2008')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj_Borrowed_Collection(Borr_ID, ArtObj, Col_Id, Dateborrowed, Datereturned) values ('4','JP07', 'JP_C2', '02/02/2005', '02/03/2006')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj_Borrowed_Collection(Borr_ID, ArtObj, Col_Id, Dateborrowed, Datereturned) values ('5','JP07',  'JP_C2', '12/2/2007', '12/12/2008')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj_Exposed_In_Exhibition(ArtID, E_Id, Startdate, Enddate) values ('JP07', 'JP_E02', '12/02/2007', '02/02/2008')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj(ArtID, ArtYear, ArtTitel, ArtEpoch, ArtDescr, OStyle, ArtArtist) values ('JP08', 2000, '08', 'Modern', 'Steel', 'style4', 'A3')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO Sculpture (ArtID, SMat, SHeight, SWeight) values ('JP08', 'Steel', 0.5, 2.5)
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj_MadeBy_Artist(ArtObj_ID, Artist_ID) values ('JP08', 'JP_A3')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO Other_Collections(Col_Id, ColName, ColType, ColDescr, ColAdr, ColPhone, ColContact) values ('JP_C3', 'C3', 'Museum', 'Small', 'C3 Road', '1231234', 'Jhan Perera')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO Borrowed (ArtID, DateBorrow, DateReturn) values ('JP08', '12/30/2006', '12/30/2008')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj_Borrowed_Collection(Borr_ID, ArtObj, Col_Id, Dateborrowed, Datereturned) values ('6', 'JP08', 'JP_C3', '12/30/2006', '12/30/2008')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj(ArtID, ArtYear, ArtTitel, ArtEpoch, ArtDescr, OStyle, ArtArtist) values ('JP09', 2002, '09', 'Modern', 'Photo', 'style4', 'A3')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO Other (ArtID, OType) values ('JP09', 'Photo')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj_MadeBy_Artist(ArtObj_ID, Artist_ID) values ('JP09', 'JP_A3')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO Borrowed (ArtID, DateBorrow, DateReturn) values ('JP09', '12/30/2006', '12/30/2008')
+DB20000I  The SQL command completed successfully.
+
+INSERT INTO ArtObj_Borrowed_Collection(Borr_ID, ArtObj, Col_Id, Dateborrowed, Datereturned) values ('7', 'JP09', 'JP_C3', '12/30/2006', '12/30/2008')
+DB20000I  The SQL command completed successfully.
+
+COMMIT WORK
+DB20000I  The SQL command completed successfully.
+
+TERMINATE
+DB20000I  The TERMINATE command completed successfully.
+

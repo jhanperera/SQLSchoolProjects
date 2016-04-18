@@ -1,0 +1,13 @@
+SELECT * FROM ARTIST                   
+SELECT * FROM ARTOBJ                          
+SELECT * FROM ARTOBJ_BORROWED_COLLECTION      
+SELECT * FROM ARTOBJ_EXPOSED_IN_EXHIBITION    
+SELECT * FROM ARTOBJ_MADEBY_ARTIST            
+SELECT * FROM BORROWED                                               
+SELECT * FROM EXHIBITION                      
+SELECT * FROM OTHER                           
+SELECT * FROM OTHER_COLLECTIONS               
+SELECT * FROM PAINTING                        
+SELECT * FROM PERMANENT                       
+SELECT * FROM SCULPTURE  
+
